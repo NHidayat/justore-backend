@@ -5,24 +5,13 @@ export const formatDate = (date = new Date(), format = 'YYYY-MM-DD HH:mm:ss') =>
   return dayjs(date).format(format)
 }
 
-export const getPrevLink = (page, currentQuery) => {
-  if (page > 1) {
-    const generatePage = { page: page - 1 }
-    const result = { ...currentQuery, ...generatePage }
-    return queryString.stringify(result)
-  } else {
-    return null
-  }
-}
+export const generateQuery = (path = '', page, totalPage, currentQuery, direction) => {
+  const newPage = direction === 'prev' ? page - 1 : page + 1
 
-export const getNextLink = (page, totalPage, currentQuery) => {
-  console.log(page, totalPage, currentQuery)
-
-  if (page < totalPage) {
-    const generatePage = { page: page + 1 }
-    const result = { ...currentQuery, ...generatePage }
-    return queryString.stringify(result)
-  } else {
-    return null
+  if (newPage >= 1 && newPage <= totalPage) {
+    const result = { ...currentQuery, page: newPage }
+    return path + queryString.stringify(result)
   }
+
+  return null
 }

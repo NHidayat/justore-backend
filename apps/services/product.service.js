@@ -7,6 +7,12 @@ const productService = {
 
     if (!result[0]?.id) throw new ApiError(404, 'Product is not found')
     return result[0]
+  },
+
+  getFromDummyJSON: async () => {
+    return await fetch('https://dummyjson.com/products?limit=50')
+      .then(res => res.json())
+      .then(data => data)
   }
 }
 
