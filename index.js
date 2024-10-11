@@ -1,7 +1,7 @@
-require('./apps/utils/customConsole')
-const Hapi = require('@hapi/hapi')
-const routes = require('./apps/routes')
-const config = require('./apps/configs/config')
+import './apps/utils/customConsole.js'
+import Hapi from '@hapi/hapi'
+import routes from './apps/routes/index.js'
+import config from './apps/configs/config.js'
 
 const init = async () => {
   const server = Hapi.server({

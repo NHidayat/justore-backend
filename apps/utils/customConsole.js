@@ -1,4 +1,4 @@
-const { formatDate } = require('./helper')
+import { formatDate } from './helper.js'
 
 const originalConsole = {
   log: console.log,

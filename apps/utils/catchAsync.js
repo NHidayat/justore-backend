@@ -1,5 +1,5 @@
-const config = require('../configs/config')
-const appResponse = require('./response')
+import config from '../configs/config.js'
+import appResponse from './appResponse.js'
 
 const catchAsync = (fn) => {
   return async (request, h) => {
@@ -17,4 +17,4 @@ const catchAsync = (fn) => {
   }
 }
 
-module.exports = catchAsync
+export default catchAsync

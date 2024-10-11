@@ -1,4 +1,4 @@
-const db = require('../configs/database')
+import db from '../configs/database.js'
 
 const productModel = {
 
@@ -57,4 +57,4 @@ const productModel = {
 
 }
 
-module.exports = productModel
+export default productModel

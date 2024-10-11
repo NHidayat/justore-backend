@@ -1,5 +1,5 @@
-const ApiError = require('../utils/ApiError')
-const productModel = require('../models/product.model')
+import ApiError from '../utils/ApiError.js'
+import productModel from '../models/product.model.js'
 
 const productService = {
   getBySKUWithValidation: async (sku) => {
@@ -10,4 +10,4 @@ const productService = {
   }
 }
 
-module.exports = productService
+export default productService

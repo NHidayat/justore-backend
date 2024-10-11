@@ -1,8 +1,8 @@
-const productModel = require('../models/product.model')
-const productService = require('../services/product.service')
-const catchAsync = require('../utils/catchAsync')
-const { getPrevLink, getNextLink } = require('../utils/helper')
-const appResponse = require('../utils/response')
+import productModel from '../models/product.model.js'
+import productService from '../services/product.service.js'
+import catchAsync from '../utils/catchAsync.js'
+import { getPrevLink, getNextLink } from '../utils/helper.js'
+import appResponse from '../utils/appResponse.js'
 
 const productController = {
 
@@ -53,4 +53,4 @@ const productController = {
 
 }
 
-module.exports = productController
+export default productController

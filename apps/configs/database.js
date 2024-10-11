@@ -1,7 +1,7 @@
-const config = require('./config')
+import config from './config.js'
+import pgpromise from 'pg-promise'
 
-const pgp = require('pg-promise')()
-
+const pgp = pgpromise()
 const db = pgp(config.database.url)
 
-module.exports = db
+export default db

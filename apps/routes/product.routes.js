@@ -1,5 +1,5 @@
-const Joi = require('joi')
-const productController = require('../controllers/product.controller')
+import Joi from 'joi'
+import productController from '../controllers/product.controller.js'
 
 const productRoutes = [
   {
@@ -30,4 +30,4 @@ const productRoutes = [
   }
 ]
 
-module.exports = productRoutes
+export default productRoutes

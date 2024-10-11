@@ -6,5 +6,4 @@ const appResponse = (h, statusCode = 500, message = null, data = null, stack) =>
     stack
   }).code(statusCode)
 }
-
-module.exports = appResponse
+export default appResponse
