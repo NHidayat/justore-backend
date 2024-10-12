@@ -1,5 +1,14 @@
 import db from '../configs/database.js'
 
+const productField = {
+  title: null,
+  sku: null,
+  image: null,
+  price: null,
+  description: null,
+  stock: null
+}
+
 const productModel = {
 
   countAll: () => {
@@ -14,14 +23,7 @@ const productModel = {
     return db.any('SELECT * FROM products WHERE sku = $1', [sku])
   },
 
-  insert: (data = {
-    title: null,
-    sku: null,
-    image: null,
-    price: null,
-    description: null,
-    stock: null
-  }) => {
+  insert: (data = productField) => {
     return db.any(
       `
       INSERT INTO products (
@@ -49,6 +51,33 @@ const productModel = {
         stock: data.stock
       }
     )
+  },
+
+  update: (data = productField, sku) => {
+    return db.any(
+      `
+      UPDATE products 
+      SET
+        title = $<title>,
+        image = $<image>,
+        price = $<price>,
+        description = $<description>,
+        stock = $<stock>
+      WHERE sku = $<sku>
+      `,
+      {
+        title: data.title,
+        image: data.image,
+        price: data.price,
+        description: data.description,
+        stock: data.stock,
+        sku
+      }
+    )
+  },
+
+  delete: (sku) => {
+    return db.any('DELETE FROM products WHERE sku = $<sku>', { sku })
   }
 
 }

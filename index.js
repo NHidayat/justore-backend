@@ -5,6 +5,7 @@ import config from './apps/configs/config.js'
 import inert from '@hapi/inert'
 import { fileURLToPath } from 'url'
 import path from 'path'
+import { appResponse } from './apps/utils/response.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -23,6 +24,12 @@ const init = async () => {
   })
 
   server.route(routes)
+
+  server.route({
+    method: '*',
+    path: '/{any*}',
+    handler: (_, h) => appResponse(h, 404, 'Not Found')
+  })
 
   server.route({
     method: 'GET',

@@ -8,7 +8,7 @@ const catchAsync = (fn) => {
     } catch (err) {
       const errCode = err.statusCode || 500
 
-      if (config.appEnvironment !== 'production') {
+      if (config.nodeEnvironment !== 'production') {
         console.error(err)
       }
 

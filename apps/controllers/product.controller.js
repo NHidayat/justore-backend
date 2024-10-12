@@ -3,11 +3,11 @@ import productService from '../services/product.service.js'
 import catchAsync from '../utils/catchAsync.js'
 import { generateQuery, generateSKU } from '../utils/helper.js'
 import { appResponse } from '../utils/response.js'
-import upload from '../utils/upload.js'
+import { deleteFile, upload } from '../utils/fileManage.js'
 
 const productController = {
 
-  getProducts: catchAsync(async (req, h) => {
+  getAll: catchAsync(async (req, h) => {
     const { page = 1, limit = 8 } = req.query
     const offset = (page - 1) * limit
 
@@ -28,8 +28,11 @@ const productController = {
     return appResponse(h, 200, 'OK', { pageInfo, data })
   }),
 
-  getBySKU: catchAsync(async (req, h) => {
-    const result = await productService.getBySKUWithValidation(req.params.sku)
+  getDetail: catchAsync(async (req, h) => {
+    const { sku } = req.params
+
+    const result = await productService.getBySKUWithValidation(sku)
+
     return appResponse(h, 200, 'Success get product detail', result)
   }),
 
@@ -44,6 +47,40 @@ const productController = {
 
     await productModel.insert(payload)
     return appResponse(h, 200, 'Success create product', payload)
+  }),
+
+  update: catchAsync(async (req, h) => {
+    const { sku } = req.params
+    const newData = req.payload
+
+    const getOldData = await productService.getBySKUWithValidation(sku)
+
+    const payload = {
+      title: newData.title || getOldData.title,
+      image: newData.image ? await upload(newData.image) : getOldData.image,
+      price: newData.price || getOldData.price,
+      description: newData.description || getOldData.description,
+      stock: newData.stock || getOldData.stock
+    }
+
+    await productModel.update(payload, sku)
+
+    return appResponse(h, 201, 'Success update product', payload)
+  }),
+
+  delete: catchAsync(async (req, h) => {
+    const { sku } = req.params
+
+    const getData = await productService.getBySKUWithValidation(sku)
+
+    await productModel.delete(sku)
+
+    if (getData.image) {
+      const getFilePath = new URL(getData.image).pathname
+      await deleteFile('./' + getFilePath)
+    }
+
+    return appResponse(h, 200, 'Success delete product ' + sku)
   }),
 
   importProductsFromDummyJSON: catchAsync(async (req, h) => {

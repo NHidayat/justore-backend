@@ -8,7 +8,7 @@ export const createProductScheme = Joi.object({
   stock: Joi.number().required()
 })
 
-export const getProductsScheme = Joi.object({
+export const getAllProductScheme = Joi.object({
   page: Joi.number(),
   limit: Joi.number()
 })
