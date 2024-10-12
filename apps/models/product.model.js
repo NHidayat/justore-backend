@@ -15,7 +15,6 @@ const productModel = {
   },
 
   insert: (data = {
-    id: null,
     title: null,
     sku: null,
     image: null,
@@ -26,7 +25,6 @@ const productModel = {
     return db.any(
       `
       INSERT INTO products (
-        id,
         title,
         sku,
         image,
@@ -34,17 +32,15 @@ const productModel = {
         description,
         stock
       ) VALUES (
-        $<id>,
         $<title>,
         $<sku>,
         $<image>,
         $<price>,
         $<description>,
         $<stock>
-      ) ON CONFLICT (id) DO NOTHING;
+      ) ON CONFLICT (sku) DO NOTHING;
       `,
       {
-        id: data.id,
         title: data.title,
         sku: data.sku,
         image: data.image,

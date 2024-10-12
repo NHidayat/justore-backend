@@ -1,5 +1,5 @@
 import config from '../configs/config.js'
-import appResponse from './appResponse.js'
+import { appResponse } from './response.js'
 
 const catchAsync = (fn) => {
   return async (request, h) => {
@@ -12,7 +12,7 @@ const catchAsync = (fn) => {
         console.error(err)
       }
 
-      return appResponse(h, errCode, err.message || 'Internal Server Error', null)
+      return appResponse(h, errCode, err.message || 'Internal Server Error', err.data || null)
     }
   }
 }

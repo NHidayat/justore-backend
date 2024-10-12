@@ -1,8 +1,8 @@
 class ApiError extends Error {
-  constructor (statusCode, message, isOperational = true, stack = '') {
+  constructor (statusCode, message, data = null, stack = '') {
     super(message)
     this.statusCode = statusCode
-    this.isOperational = isOperational
+    this.data = data
     if (stack) {
       this.stack = stack
     } else {

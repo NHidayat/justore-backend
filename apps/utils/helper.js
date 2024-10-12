@@ -15,3 +15,15 @@ export const generateQuery = (path = '', page, totalPage, currentQuery, directio
 
   return null
 }
+
+export const generateSKU = () => {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' // Karakter yang bisa digunakan
+  let sku = ''
+
+  for (let i = 0; i < 10; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length)
+    sku += characters[randomIndex]
+  }
+
+  return sku
+}

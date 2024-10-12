@@ -1,7 +1,9 @@
 # Ignored
 node_modules/
-
 .env
+
+uploads/*
+!uploads/init.txt
 
 ### Linux ###
 *~
