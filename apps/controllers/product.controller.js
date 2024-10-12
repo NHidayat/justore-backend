@@ -1,29 +1,20 @@
 import productModel from '../models/product.model.js'
 import productService from '../services/product.service.js'
 import catchAsync from '../utils/catchAsync.js'
-import { generateQuery, generateSKU } from '../utils/helper.js'
-import { appResponse } from '../utils/response.js'
 import { deleteFile, upload } from '../utils/fileManage.js'
+import { generatePageInfo, generateSKU } from '../utils/helper.js'
+import { appResponse } from '../utils/response.js'
 
 const productController = {
 
   getAll: catchAsync(async (req, h) => {
     const { page = 1, limit = 8 } = req.query
-    const offset = (page - 1) * limit
 
     const { total } = await productModel.countAll().then(res => res[0])
-    const totalPage = Math.ceil(total / limit)
 
-    const pageInfo = {
-      page,
-      totalPage,
-      totalData: total,
-      limit,
-      prev: generateQuery('/product?', page, totalPage, req.query, 'prev'),
-      next: generateQuery('/product?', page, totalPage, req.query, 'next')
-    }
+    const pageInfo = generatePageInfo('products?', page, limit, total, req.query)
 
-    const data = await productModel.selectAll(limit, offset)
+    const data = await productModel.selectAll(limit, (page - 1) * limit)
 
     return appResponse(h, 200, 'OK', { pageInfo, data })
   }),

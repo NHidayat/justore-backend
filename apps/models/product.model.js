@@ -23,6 +23,10 @@ const productModel = {
     return db.any('SELECT * FROM products WHERE sku = $1', [sku])
   },
 
+  selectInSKU: (skus = []) => {
+    return db.any('SELECT title, sku, price, stock FROM products P WHERE sku IN ($<skus:csv>)', { skus })
+  },
+
   insert: (data = productField) => {
     return db.any(
       `
@@ -78,6 +82,10 @@ const productModel = {
 
   delete: (sku) => {
     return db.any('DELETE FROM products WHERE sku = $<sku>', { sku })
+  },
+
+  reduceStockTx: (qty, sku, tx) => {
+    return tx.any('UPDATE products SET stock = stock - $<qty> WHERE sku = $<sku>', { qty, sku })
   }
 
 }
