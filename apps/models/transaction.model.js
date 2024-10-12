@@ -20,7 +20,20 @@ const transactionModel = {
   },
 
   selectAll: (limit, offset) => {
-    return db.any('SELECT * FROM transactions LIMIT $1 OFFSET $2', [limit, offset])
+    return db.any(
+      `SELECT 
+        T.*,
+        ( SELECT SUM(QTY) FROM TRANSACTIONS_ITEMS TI WHERE TI.TRANSACTION_ID = T.TRANSACTION_ID ) AS QTY
+      FROM ( SELECT * FROM TRANSACTIONS LIMIT $1 OFFSET $2) T`
+      , [limit, offset])
+  },
+
+  selectByTrxId: (trxId) => {
+    return db.any('SELECT * FROM transactions WHERE transaction_id = $<trxId>', { trxId })
+  },
+
+  selectItemsByTrxId: (trxId) => {
+    return db.any('SELECT * FROM transactions_items WHERE transaction_id = $<trxId>', { trxId })
   },
 
   insertTx: (data = transactionsField, tx) => {

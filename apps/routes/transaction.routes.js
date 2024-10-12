@@ -14,6 +14,12 @@ const transactionRoutes = [
   },
 
   {
+    method: 'GET',
+    path: '/transactions/{transactionId}',
+    handler: transactionController.getDetail
+  },
+
+  {
     method: 'POST',
     path: '/transactions',
     options: {

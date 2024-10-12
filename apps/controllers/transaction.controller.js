@@ -1,6 +1,7 @@
 import db from '../configs/database.js'
 import productModel from '../models/product.model.js'
 import transactionModel from '../models/transaction.model.js'
+import transactionService from '../services/transaction.service.js'
 import ApiError from '../utils/ApiError.js'
 import catchAsync from '../utils/catchAsync.js'
 import { generatePageInfo, generateTrxId } from '../utils/helper.js'
@@ -18,13 +19,25 @@ const transactionController = {
     return appResponse(h, 200, 'Success get transactions', { pageInfo, data })
   }),
 
+  getDetail: catchAsync(async (req, h) => {
+    const { transactionId } = req.params
+    const getMaster = await transactionService.getByIdValidate(transactionId)
+    const getItems = await transactionModel.selectItemsByTrxId(transactionId)
+    const result = {
+      ...getMaster,
+      items: getItems
+    }
+    return appResponse(h, 200, 'Success get transaction detail', result)
+  }),
+
   create: catchAsync(async (req, h) => {
     const trxId = generateTrxId()
     const getProductsInfo = await productModel.selectInSKU(req.payload.items.map(obj => obj.sku))
-    const result = []
+    let resultMaster = {}
+    const resultItems = []
+    let totalAmount = 0
 
     await db.tx(async tx => {
-      let totalAmount = 0
       for (const item of req.payload.items) {
         const productDetail = getProductsInfo.find(o => o.sku === item.sku)
 
@@ -40,6 +53,7 @@ const transactionController = {
         totalAmount += payloadItems.amount
         await productModel.reduceStockTx(item.qty, item.sku, tx)
         await transactionModel.insertItemsTx(payloadItems, tx)
+        resultItems.push(payloadItems)
       }
 
       const payloadMaster = {
@@ -50,9 +64,10 @@ const transactionController = {
         receiver_address: req.payload.receiver_address
       }
       await transactionModel.insertTx(payloadMaster, tx)
+      resultMaster = payloadMaster
     })
 
-    return appResponse(h, 200, 'Success create transaction', result)
+    return appResponse(h, 200, 'Success create transaction', { ...resultMaster, items: resultItems })
   })
 
 }
