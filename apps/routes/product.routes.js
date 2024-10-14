@@ -1,5 +1,5 @@
 import productController from '../controllers/product.controller.js'
-import { createProductScheme, getAllProductScheme } from '../validations/product.validation.js'
+import { createProductScheme, getAllProductScheme, updateProductScheme } from '../validations/product.validation.js'
 import { multipartPayloadOptions, validationOptions } from './routes.options.js'
 
 const productRoutes = [
@@ -33,7 +33,7 @@ const productRoutes = [
     path: '/products/{sku}',
     options: {
       payload: multipartPayloadOptions,
-      ...validationOptions('payload', createProductScheme)
+      ...validationOptions('payload', updateProductScheme)
     },
     handler: productController.update
   },

@@ -13,7 +13,14 @@ const __dirname = path.dirname(__filename)
 const init = async () => {
   const server = Hapi.server({
     port: config.port,
-    host: 'localhost'
+    host: 'localhost',
+    routes: {
+      cors: {
+        origin: ['*'], // Mengizinkan semua asal (origin), bisa juga ditentukan asal spesifik
+        additionalHeaders: ['cache-control', 'x-requested-with'], // Header tambahan jika dibutuhkan
+        credentials: true // Jika ingin mengizinkan permintaan dengan cookies atau credentials
+      }
+    }
   })
 
   await server.register(inert)

@@ -16,7 +16,7 @@ const productModel = {
   },
 
   selectAll: (limit, offset) => {
-    return db.any('SELECT * FROM products LIMIT $1 OFFSET $2', [limit, offset])
+    return db.any('SELECT * FROM products ORDER BY date_created DESC LIMIT $1 OFFSET $2', [limit, offset])
   },
 
   selectBySKU: (sku) => {

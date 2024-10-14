@@ -12,3 +12,11 @@ export const createProductScheme = Joi.object({
   description: Joi.string().required(),
   stock: Joi.number().required()
 })
+
+export const updateProductScheme = Joi.object({
+  title: Joi.string().max(255).required(),
+  image: Joi.any().allow('', null),
+  price: Joi.number().required(),
+  description: Joi.string().required(),
+  stock: Joi.number().required()
+})
