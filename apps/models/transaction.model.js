@@ -33,8 +33,6 @@ const transactionModel = {
   },
 
   selectItemsByTrxId: (trxId) => {
-    console.log(trxId)
-
     return db.any(
       `SELECT 
       ti.*,
