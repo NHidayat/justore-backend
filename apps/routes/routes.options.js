@@ -5,7 +5,7 @@ export const multipartPayloadOptions = {
   multipart: true,
   output: 'stream',
   parse: true,
-  maxBytes: 1048576
+  maxBytes: 3048576
 }
 
 export const validationOptions = (type, scheme) => ({
