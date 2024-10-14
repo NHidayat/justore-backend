@@ -26,6 +26,12 @@ const transactionRoutes = [
       ...validationOptions('payload', createTransactionScheme)
     },
     handler: transactionController.create
+  },
+
+  {
+    method: 'DELETE',
+    path: '/transactions/{transactionId}',
+    handler: transactionController.delete
   }
 
 ]

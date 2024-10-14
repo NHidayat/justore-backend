@@ -68,6 +68,12 @@ const transactionController = {
     })
 
     return appResponse(h, 200, 'Success create transaction', { ...resultMaster, items: resultItems })
+  }),
+
+  delete: catchAsync(async (req, h) => {
+    const { transactionId } = req.params
+    await transactionModel.softDelete(transactionId)
+    return appResponse(h, 200, 'Success delete transactions ' + transactionId)
   })
 
 }

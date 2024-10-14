@@ -16,7 +16,7 @@ const transactionsItemsField = {
 const transactionModel = {
 
   countAll: () => {
-    return db.any('SELECT COUNT(1) AS TOTAL FROM transactions')
+    return db.any('SELECT COUNT(1) AS TOTAL FROM transactions WHERE is_deleted = FALSE')
   },
 
   selectAll: (limit, offset) => {
@@ -24,7 +24,7 @@ const transactionModel = {
       `SELECT 
         T.*,
         ( SELECT SUM(QTY) FROM TRANSACTIONS_ITEMS TI WHERE TI.TRANSACTION_ID = T.TRANSACTION_ID ) AS QTY
-      FROM ( SELECT * FROM TRANSACTIONS ORDER BY date_created DESC LIMIT $1 OFFSET $2) T`
+      FROM ( SELECT * FROM TRANSACTIONS WHERE is_deleted = FALSE ORDER BY date_created DESC LIMIT $1 OFFSET $2) T`
       , [limit, offset])
   },
 
@@ -90,6 +90,10 @@ const transactionModel = {
       amount: data.amount
     }
     )
+  },
+
+  softDelete: (trxId) => {
+    return db.any('UPDATE transactions SET is_deleted = TRUE WHERE transaction_id = $<trxId>', { trxId })
   }
 }
 
