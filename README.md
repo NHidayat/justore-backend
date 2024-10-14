@@ -16,7 +16,6 @@ Clone the repo:
 ```bash
 git clone https://github.com/NHidayat/justore-backend.git
 cd justore-backend
-npx rimraf ./.git
 ```
 
 Install the dependencies:
