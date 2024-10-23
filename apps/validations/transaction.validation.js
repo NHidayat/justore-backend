@@ -12,5 +12,5 @@ export const createTransactionScheme = Joi.object({
   items: Joi.array().items(Joi.object({
     sku: Joi.string().max(100).required(),
     qty: Joi.number().required()
-  }))
+  })).min(1)
 })
